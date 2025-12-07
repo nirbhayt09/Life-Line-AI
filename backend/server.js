@@ -89,5 +89,15 @@ app.post('/api/blood-bank/emergency', (req, res) => {
     res.json({ success: true, message: 'Emergency broadcast sent to 15 nearby donors.' });
 });
 
-const PORT = 5001;
+const path = require('path');
+
+// Serve frontend static files
+app.use(express.static(path.join(__dirname, '../frontend/dist')));
+
+// Handle React routing, return all requests to React app
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/dist', 'index.html'));
+});
+
+const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`Lifeline AI Backend running on port ${PORT}`));
